@@ -1,0 +1,20 @@
+package com.openclassrooms.joiefull.di
+
+import com.openclassrooms.joiefull.data.repository.ArticlesRepository
+import com.openclassrooms.joiefull.data.repository.ArticlesRepositoryImpl
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class RepositoryModule {
+
+    @Binds
+    @Singleton
+    abstract fun bindArticlesRepository(
+        impl: ArticlesRepositoryImpl,
+    ) : ArticlesRepository
+}
