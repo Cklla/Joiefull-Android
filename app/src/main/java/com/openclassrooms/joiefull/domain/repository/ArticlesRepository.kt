@@ -1,4 +1,4 @@
-package com.openclassrooms.joiefull.data.repository
+package com.openclassrooms.joiefull.domain.repository
 
 import com.openclassrooms.joiefull.domain.model.Article
 

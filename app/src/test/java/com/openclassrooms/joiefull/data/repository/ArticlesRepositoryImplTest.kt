@@ -10,6 +10,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.IOException
 
+
 private class FakeClothesApiService(
     private val articles: List<ArticleDto> = emptyList(),
     private val error: Throwable? = null,
@@ -42,5 +43,12 @@ class ArticlesRepositoryImplTest {
         assertEquals(listOf(dto.toDomain()), result.getOrNull())
     }
 
+    @Test
+    fun `getArticles returns failure when api throws`() = runTest {
+        val repository = ArticlesRepositoryImpl(FakeClothesApiService(error = IOException("network error")))
 
+        val result = repository.getArticles()
+
+        assertTrue(result.isFailure)
+    }
 }
