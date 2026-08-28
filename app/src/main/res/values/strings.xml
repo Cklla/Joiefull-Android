@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Joiefull</string>
+
+    <string name="article_likes_count">%d favoris</string>
+    <string name="article_price">%.2f €</string>
+
+    <string name="category_tops">Hauts</string>
+    <string name="category_bottoms">Bas</string>
+    <string name="category_shoes">Chaussures</string>
+    <string name="category_accessories">Accessoires</string>
+    <string name="category_unknown">Autres</string>
+    <string name="article_click_label">Voir le détail de l\'article</string>
 </resources>
