@@ -33,12 +33,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Star
+import com.openclassrooms.joiefull.domain.model.ArticleUiModel
+import com.openclassrooms.joiefull.domain.model.ArticleUserState
 
 @Composable
 fun ArticleCard(
-    article: Article,
+    articleUiModel: ArticleUiModel,
     modifier: Modifier = Modifier,
 ) {
+    val article = articleUiModel.article
+
     Column(modifier = modifier.fillMaxWidth()) {
         Box {
             AsyncImage(
@@ -83,6 +88,20 @@ fun ArticleCard(
             )
             PriceLabel(price = article.price, originalPrice = article.originalPrice)
         }
+        if (articleUiModel.userState.rating > 0) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp)
+                )
+                Text(
+                    text = stringResource(R.string.article_rating, articleUiModel.userState.rating),
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+        }
     }
 }
 
@@ -108,15 +127,18 @@ private fun PriceLabel(price: Double, originalPrice: Double) {
 private fun ArticleCardPreview() {
     JoiefullTheme {
         ArticleCard(
-            article = Article(
-                id = 1,
-                imageUrl = "https://raw.githubusercontent.com/.../image.jpg",
-                imageDescription = "T-shirt blanc à rayures",
-                name = "T-shirt rayé",
-                category = Category.TOPS,
-                likes = 3,
-                price = 19.99,
-                originalPrice = 24.99,
+            articleUiModel = ArticleUiModel(
+                article = Article(
+                    id = 1,
+                    imageUrl = "https://raw.githubusercontent.com/.../image.jpg",
+                    imageDescription = "T-shirt blanc à rayures",
+                    name = "T-shirt rayé",
+                    category = Category.TOPS,
+                    likes = 3,
+                    price = 19.99,
+                    originalPrice = 24.99,
+                ),
+                userState = ArticleUserState(isFavorite = true, rating = 4),
             ),
         )
     }

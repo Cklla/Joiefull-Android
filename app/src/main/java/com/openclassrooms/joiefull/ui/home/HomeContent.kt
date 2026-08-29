@@ -19,12 +19,12 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.openclassrooms.joiefull.R
-import com.openclassrooms.joiefull.domain.model.Article
+import com.openclassrooms.joiefull.domain.model.ArticleUiModel
 import com.openclassrooms.joiefull.domain.model.Category
 
 @Composable
 fun HomeContent(
-    articlesByCategory: Map<Category, List<Article>>,
+    articlesByCategory: Map<Category, List<ArticleUiModel>>,
     onArticleClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -48,7 +48,7 @@ fun HomeContent(
 @Composable
 private fun CategorySection(
     category: Category,
-    articles: List<Article>,
+    articles: List<ArticleUiModel>,
     onArticleClick: (Int) -> Unit
 ) {
     Column {
@@ -63,14 +63,14 @@ private fun CategorySection(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(articles, key = { it.id }) { article ->
+            items(articles, key = { it.article.id }) { articleUiModel ->
                 ArticleCard(
-                    article = article,
+                    articleUiModel = articleUiModel,
                     modifier = Modifier
                         .width(170.dp)
                         .clickable(
                             onClickLabel = stringResource(R.string.article_click_label),
-                        ) { onArticleClick(article.id) }
+                        ) { onArticleClick(articleUiModel.article.id) }
                         .semantics(mergeDescendants = true) {}
                 )
             }

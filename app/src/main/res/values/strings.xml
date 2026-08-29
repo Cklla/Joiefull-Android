@@ -12,4 +12,6 @@
     <string name="article_click_label">Voir le détail de l\'article</string>
 
     <string name="back_content_description">Retour</string>
+
+    <string name="article_rating">%d/5</string>
 </resources>
