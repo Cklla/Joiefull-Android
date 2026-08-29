@@ -10,11 +10,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun HomeScreen(
+    onArticleClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
@@ -33,9 +34,7 @@ fun HomeScreen(
         is HomeUiState.Success -> {
             HomeContent(
                 articlesByCategory = state.articlesByCategory,
-                onArticleClick = { articleId ->
-                    // TODO: navigation vers l'écran de détail
-                },
+                onArticleClick = onArticleClick,
                 modifier = modifier
             )
         }

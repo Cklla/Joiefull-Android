@@ -10,4 +10,6 @@
     <string name="category_accessories">Accessoires</string>
     <string name="category_unknown">Autres</string>
     <string name="article_click_label">Voir le détail de l\'article</string>
+
+    <string name="back_content_description">Retour</string>
 </resources>
