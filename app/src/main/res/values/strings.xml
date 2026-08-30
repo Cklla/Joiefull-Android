@@ -14,4 +14,10 @@
     <string name="back_content_description">Retour</string>
 
     <string name="article_rating">%d/5</string>
+
+    <string name="share_content_description">Partager</string>
+    <string name="favorite_add_content_description">Ajouter aux favoris</string>
+    <string name="favorite_remove_content_description">Retirer des favoris</string>
+    <string name="rating_star_content_description">Donner la note %d sur 5</string>
+    <string name="comment_placeholder">Partagez ici vos impressions sur cette pièce</string>
 </resources>
