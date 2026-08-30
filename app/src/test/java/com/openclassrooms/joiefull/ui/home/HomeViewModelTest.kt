@@ -4,7 +4,7 @@ import com.openclassrooms.joiefull.domain.model.Article
 import com.openclassrooms.joiefull.domain.model.ArticleUiModel
 import com.openclassrooms.joiefull.domain.model.ArticleUserState
 import com.openclassrooms.joiefull.domain.model.Category
-import com.openclassrooms.joiefull.domain.repository.ArticleUserStateRepositoryImpl
+import com.openclassrooms.joiefull.data.repository.ArticleUserStateRepositoryImpl
 import com.openclassrooms.joiefull.domain.repository.ArticlesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

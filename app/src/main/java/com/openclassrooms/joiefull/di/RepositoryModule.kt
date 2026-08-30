@@ -2,7 +2,7 @@ package com.openclassrooms.joiefull.di
 
 import com.openclassrooms.joiefull.data.repository.ArticlesRepositoryImpl
 import com.openclassrooms.joiefull.domain.repository.ArticleUserStateRepository
-import com.openclassrooms.joiefull.domain.repository.ArticleUserStateRepositoryImpl
+import com.openclassrooms.joiefull.data.repository.ArticleUserStateRepositoryImpl
 import com.openclassrooms.joiefull.domain.repository.ArticlesRepository
 import dagger.Binds
 import dagger.Module
