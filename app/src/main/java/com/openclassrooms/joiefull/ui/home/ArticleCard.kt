@@ -67,7 +67,7 @@ fun ArticleCard(
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surface)
                     .padding(horizontal = 10.dp, vertical = 5.dp)
-                    .semantics(mergeDescendants = true) {
+                    .semantics {
                         contentDescription = likesContentDescription
                     }
             ) {

@@ -11,9 +11,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.isTraversalGroup
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.traversalIndex
 import com.openclassrooms.joiefull.ui.detail.DetailEmptyState
 import com.openclassrooms.joiefull.ui.detail.DetailScreen
 import com.openclassrooms.joiefull.ui.home.HomeScreen
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
 
 @Composable
 fun JoiefullApp(modifier: Modifier = Modifier) {
@@ -25,9 +30,22 @@ fun JoiefullApp(modifier: Modifier = Modifier) {
         Row(modifier = modifier.fillMaxSize()) {
             HomeScreen(
                 onArticleClick = { id -> selectedArticleId = id },
-                modifier = Modifier.weight(3f)
+                modifier = Modifier
+                    .weight(3f)
+                    .semantics {
+                        isTraversalGroup = true
+                        traversalIndex = 0f
+                    }
             )
-            Box(modifier = Modifier.weight(2f)) {
+            Box(
+                modifier = Modifier
+                    .weight(2f)
+                    .semantics {
+                        isTraversalGroup = true
+                        traversalIndex = 1f
+                        liveRegion = LiveRegionMode.Polite
+                    }
+            ) {
                 if (articleId != null) {
                     DetailScreen(
                         articleId = articleId,
