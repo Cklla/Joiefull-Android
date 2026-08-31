@@ -21,4 +21,6 @@
     <string name="favorite_remove_content_description">Retirer des favoris</string>
     <string name="rating_star_content_description">Donner la note %d sur 5</string>
     <string name="comment_placeholder">Partagez ici vos impressions sur cette pièce</string>
+
+    <string name="detail_empty_state_message">Sélectionnez un article pour voir son détail</string>
 </resources>

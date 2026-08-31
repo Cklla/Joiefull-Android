@@ -3,9 +3,7 @@ package com.openclassrooms.joiefull.ui.detail
 import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -37,6 +35,7 @@ fun DetailScreen(
     articleId: Int,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
+    showBackButton: Boolean = true,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
     LaunchedEffect(articleId) {
@@ -81,18 +80,20 @@ fun DetailScreen(
         }
 
         // Boutons retour/partage flottants, à la même position dans les 3 états
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(16.dp)
         ) {
-            FloatingIconButton(
-                icon = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(R.string.back_content_description),
-                onClick = onBackClick,
-            )
+            if (showBackButton) {
+                FloatingIconButton(
+                    icon = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back_content_description),
+                    onClick = onBackClick,
+                    modifier = Modifier.align(Alignment.CenterStart),
+                )
+            }
             if (state is DetailUiState.Success) {
                 val article = state.articleUiModel.article
                 val formattedPrice = stringResource(R.string.article_price, article.price)
@@ -112,6 +113,7 @@ fun DetailScreen(
                         }
                         context.startActivity(Intent.createChooser(sendIntent, shareLabel))
                     },
+                    modifier = Modifier.align(Alignment.CenterEnd),
                 )
             }
         }
