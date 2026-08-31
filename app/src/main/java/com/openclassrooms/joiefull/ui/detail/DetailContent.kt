@@ -2,6 +2,7 @@ package com.openclassrooms.joiefull.ui.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,6 +25,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +43,10 @@ import com.openclassrooms.joiefull.domain.model.ArticleUiModel
 import com.openclassrooms.joiefull.domain.model.ArticleUserState
 import com.openclassrooms.joiefull.domain.model.Category
 import com.openclassrooms.joiefull.ui.theme.JoiefullTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 
 @Composable
 fun DetailContent(
@@ -52,6 +59,10 @@ fun DetailContent(
     val article = articleUiModel.article
     val userState = articleUiModel.userState
 
+    var scale by remember { mutableFloatStateOf(1f) }
+    var offsetX by remember { mutableFloatStateOf(0f) }
+    var offsetY by remember { mutableFloatStateOf(0f) }
+
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
         Box {
             AsyncImage(
@@ -61,6 +72,30 @@ fun DetailContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(400.dp)
+                    .pointerInput(Unit) {
+                        detectTransformGestures { _, pan, zoom, _ ->
+                            val newScale = (scale * zoom).coerceIn(1f, 4f)
+                            scale = newScale
+                            if (newScale == 1f) {
+                                // Pas zoomé : pas de déplacement possible, on recentre l'image
+                                offsetX = 0f
+                                offsetY = 0f
+                            } else {
+                                // Empêche de déplacer l'image au delà de ses propres bords zoomés
+                                val maxX = size.width * (newScale - 1) / 2
+                                val maxY = size.height * (newScale - 1) / 2
+                                offsetX = (offsetX + pan.x * newScale).coerceIn(-maxX, maxX)
+                                offsetY = (offsetY + pan.y * newScale).coerceIn(-maxY, maxY)
+                            }
+                        }
+                    }
+                    .graphicsLayer {
+                        scaleX = scale
+                        scaleY = scale
+                        translationX = offsetX
+                        translationY = offsetY
+                        clip = true
+                    }
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,
