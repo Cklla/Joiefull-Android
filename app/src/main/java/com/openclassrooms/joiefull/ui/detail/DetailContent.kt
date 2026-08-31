@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -32,6 +33,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,13 +61,15 @@ fun DetailContent(
 ) {
     val article = articleUiModel.article
     val userState = articleUiModel.userState
+    val likesContentDescription =
+        stringResource(R.string.article_likes_count, articleUiModel.displayedLikes)
 
     var scale by remember { mutableFloatStateOf(1f) }
     var offsetX by remember { mutableFloatStateOf(0f) }
     var offsetY by remember { mutableFloatStateOf(0f) }
 
     Column(modifier = modifier.verticalScroll(rememberScrollState())) {
-        Box {
+        Box(modifier = Modifier.padding(horizontal = 16.dp)) {
             AsyncImage(
                 model = article.imageUrl,
                 contentDescription = null,
@@ -72,6 +77,7 @@ fun DetailContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(400.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .pointerInput(Unit) {
                         detectTransformGestures { _, pan, zoom, _ ->
                             val newScale = (scale * zoom).coerceIn(1f, 4f)
@@ -94,7 +100,6 @@ fun DetailContent(
                         scaleY = scale
                         translationX = offsetX
                         translationY = offsetY
-                        clip = true
                     }
             )
             Row(
@@ -113,7 +118,9 @@ fun DetailContent(
                         onClick = onFavoriteClick,
                     )
                     .padding(horizontal = 10.dp, vertical = 5.dp)
-                    .semantics(mergeDescendants = true) {}
+                    .semantics(mergeDescendants = true) {
+                        contentDescription = likesContentDescription
+                    }
             ) {
                 Icon(
                     imageVector = if (userState.isFavorite) Icons.Filled.Favorite else
@@ -122,9 +129,11 @@ fun DetailContent(
                     modifier = Modifier.size(16.dp)
                 )
                 Text(
-                    text = stringResource(R.string.article_likes_count, articleUiModel.displayedLikes),
+                    text = stringResource(R.string.article_likes_count_visible, articleUiModel.displayedLikes),
                     style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .clearAndSetSemantics {}
                 )
             }
         }

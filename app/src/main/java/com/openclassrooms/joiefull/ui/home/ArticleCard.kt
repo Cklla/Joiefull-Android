@@ -20,6 +20,9 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +46,7 @@ fun ArticleCard(
     modifier: Modifier = Modifier,
 ) {
     val article = articleUiModel.article
+    val likesContentDescription = stringResource(R.string.article_likes_count, article.likes)
 
     Column(modifier = modifier.fillMaxWidth()) {
         Box {
@@ -63,6 +67,9 @@ fun ArticleCard(
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.surface)
                     .padding(horizontal = 10.dp, vertical = 5.dp)
+                    .semantics(mergeDescendants = true) {
+                        contentDescription = likesContentDescription
+                    }
             ) {
                 Icon(
                     imageVector = Icons.Filled.Favorite,
@@ -70,9 +77,11 @@ fun ArticleCard(
                     modifier = Modifier.size(16.dp)
                 )
                 Text(
-                    text = stringResource(R.string.article_likes_count, article.likes),
+                    text = stringResource(R.string.article_likes_count_visible, article.likes),
                     style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .clearAndSetSemantics {}
                 )
             }
         }

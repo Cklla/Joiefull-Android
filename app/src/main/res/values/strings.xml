@@ -2,6 +2,7 @@
     <string name="app_name">Joiefull</string>
 
     <string name="article_likes_count">%d favoris</string>
+    <string name="article_likes_count_visible">%d</string>
     <string name="article_price">%.2f €</string>
 
     <string name="category_tops">Hauts</string>

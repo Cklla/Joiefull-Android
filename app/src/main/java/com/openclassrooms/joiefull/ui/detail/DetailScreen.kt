@@ -1,32 +1,35 @@
 package com.openclassrooms.joiefull.ui.detail
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.openclassrooms.joiefull.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
     articleId: Int,
@@ -40,36 +43,11 @@ fun DetailScreen(
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            TopAppBar(
-                title = {},
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back_content_description)
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { /*TODO: partage */ }) {
-                        Icon(
-                            imageVector = Icons.Filled.Share,
-                            contentDescription = stringResource(R.string.share_content_description)
-                        )
-                    }
-                }
-            )
-        }
-    ) { innerPadding ->
+    Box(modifier = modifier.fillMaxSize()) {
         when (val state = uiState) {
             is DetailUiState.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
@@ -82,7 +60,6 @@ fun DetailScreen(
                     onFavoriteClick = { viewModel.toggleFavorite(articleId) },
                     onRatingChange = { rating -> viewModel.setRating(articleId, rating) },
                     onCommentChange = { comment -> viewModel.setComment(articleId, comment) },
-                    modifier = Modifier.padding(innerPadding)
                 )
             }
 
@@ -90,7 +67,6 @@ fun DetailScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(innerPadding)
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -98,5 +74,48 @@ fun DetailScreen(
                 }
             }
         }
+
+        // Boutons retour/partage flottants, à la même position dans les 3 états
+        // (sur la photo pour Success, sur fond uni pour Loading/Error).
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            FloatingIconButton(
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = stringResource(R.string.back_content_description),
+                onClick = onBackClick,
+            )
+            FloatingIconButton(
+                icon = Icons.Filled.Share,
+                contentDescription = stringResource(R.string.share_content_description),
+                onClick = { /*TODO: partage */ },
+            )
+        }
+    }
+}
+
+@Composable
+private fun FloatingIconButton(
+    icon: ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .minimumInteractiveComponentSize()
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.surface)
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = contentDescription,
+        )
     }
 }
