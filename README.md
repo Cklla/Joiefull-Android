@@ -66,7 +66,7 @@ Un soin particulier a été apporté à l'accessibilité :
 - Zones cliquables respectant une taille minimale confortable au toucher.
 - Interface utilisable avec une taille de police système augmentée.
 - Compatible **TalkBack** : ordre de lecture explicite entre les panneaux en vue maître-détail, annonce automatique du changement de contenu du panneau de détail.
-- Vérifications régulières avec **Accessibility Scanner** tout au long du développement (captures dans [`docs/Accessibility Scanner`](docs/Accessibility%20Scanner)).
+- Vérifications régulières avec **Accessibility Scanner** tout au long du développement.
 
 ## Adaptabilité tablette
 
