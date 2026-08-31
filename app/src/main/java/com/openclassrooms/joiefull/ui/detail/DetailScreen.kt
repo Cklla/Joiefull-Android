@@ -1,5 +1,6 @@
 package com.openclassrooms.joiefull.ui.detail
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -42,9 +44,12 @@ fun DetailScreen(
     }
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val state = uiState
+    val context = LocalContext.current
+    val shareLabel = stringResource(R.string.share_content_description)
 
     Box(modifier = modifier.fillMaxSize()) {
-        when (val state = uiState) {
+        when (state) {
             is DetailUiState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -76,7 +81,6 @@ fun DetailScreen(
         }
 
         // Boutons retour/partage flottants, à la même position dans les 3 états
-        // (sur la photo pour Success, sur fond uni pour Loading/Error).
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,11 +93,27 @@ fun DetailScreen(
                 contentDescription = stringResource(R.string.back_content_description),
                 onClick = onBackClick,
             )
-            FloatingIconButton(
-                icon = Icons.Filled.Share,
-                contentDescription = stringResource(R.string.share_content_description),
-                onClick = { /*TODO: partage */ },
-            )
+            if (state is DetailUiState.Success) {
+                val article = state.articleUiModel.article
+                val formattedPrice = stringResource(R.string.article_price, article.price)
+                FloatingIconButton(
+                    icon = Icons.Filled.Share,
+                    contentDescription = shareLabel,
+                    onClick = {
+                        val shareText = buildArticleShareText(
+                            articleName = article.name,
+                            formattedPrice = formattedPrice,
+                            comment = state.articleUiModel.userState.comment,
+                            articleId = articleId,
+                        )
+                        val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_TEXT, shareText)
+                        }
+                        context.startActivity(Intent.createChooser(sendIntent, shareLabel))
+                    },
+                )
+            }
         }
     }
 }
