@@ -50,13 +50,15 @@ La navigation entre l'accueil et le détail est gérée par état Compose simple
 
 ## Stack technique
 
-- **Kotlin** + **Jetpack Compose** (Material 3)
-- **Hilt** — injection de dépendances
-- **Retrofit** + **Moshi** — appels réseau et parsing JSON
-- **Coil** — chargement d'images
-- **Coroutines / Flow** — asynchrone et gestion d'état
-- **Compose Material3 Adaptive** (`WindowSizeClass`) — détection de la taille d'écran pour la vue maître-détail
-- **JUnit** — tests unitaires (ViewModels, mappers, logique d'adaptation d'écran)
+| Couche | Technologie |
+|---|---|
+| Langage | Kotlin |
+| UI | Jetpack Compose (Material 3)|
+| Réseau + parsing JSON | Retrofit + Moshi |
+| Injection de dépendances | Hilt |
+| Chargement d'images | Coil |
+| Asynchrone | Coroutines + Flow |
+| Tests | JUnit |
 
 ## Accessibilité
 
