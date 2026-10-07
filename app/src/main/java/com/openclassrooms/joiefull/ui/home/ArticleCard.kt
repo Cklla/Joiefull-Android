@@ -46,7 +46,7 @@ fun ArticleCard(
     modifier: Modifier = Modifier,
 ) {
     val article = articleUiModel.article
-    val likesContentDescription = stringResource(R.string.article_likes_count, article.likes)
+    val likesContentDescription = stringResource(R.string.article_likes_count, articleUiModel.displayedLikes)
 
     Column(modifier = modifier.fillMaxWidth()) {
         Box {
@@ -77,7 +77,7 @@ fun ArticleCard(
                     modifier = Modifier.size(16.dp)
                 )
                 Text(
-                    text = stringResource(R.string.article_likes_count_visible, article.likes),
+                    text = stringResource(R.string.article_likes_count_visible, articleUiModel.displayedLikes),
                     style = MaterialTheme.typography.labelMedium,
                     modifier = Modifier
                         .padding(start = 4.dp)
